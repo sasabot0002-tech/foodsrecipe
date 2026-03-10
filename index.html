@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta name="monetag" content="95036f360dd623a80f3d41fb6caab4dd">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culinara - Global Recipe Collection</title>
+    <meta name="description" content="Discover 1000+ recipes from around the world. Search by cuisine, ingredients, or dietary preferences.">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Culinara",
+        "url": "https://culinara.recipes",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://culinara.recipes/?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary: #e67e22;
+            --primary-dark: #d35400;
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --text: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border: #ecf0f1;
+            --shadow: rgba(0,0,0,0.08);
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        [data-theme="dark"] {
+            --bg: #1a1a2e;
+            --surface: #16213e;
+            --text: #eaeaea;
+            --text-secondary: #a0a0a0;
+            --border: #0f3460;
+            --shadow: rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background-opacity: 0.95;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            color: var(--text);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 20px rgba(230, 126, 34, 0.3);
+        }
+
+        .favorites-btn {
+            background: linear-gradient(135deg, var(--danger) 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .favorites-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            display: flex;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+            transition: transform 0.3s;
+        }
+
+        .search-container:focus-within {
+            transform: scale(1.02);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
+            outline: none;
+            background: transparent;
+            color: #333;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(230, 126, 34, 0.4);
+        }
+
+        /* Filters */
+        .filters-section {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 73px;
+            z-index: 99;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .filters-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            background: var(--bg);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .filter-select:hover, .filter-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        .active-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-left: auto;
+        }
+
+        .filter-tag {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            animation: popIn 0.3s ease-out;
+            box-shadow: 0 2px 8px rgba(230, 126, 34, 0.3);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .filter-tag:hover {
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .recipe-count {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--surface);
+            padding: 0.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .view-btn {
+            background: transparent;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(230, 126, 34, 0.3);
+        }
+
+        /* Recipe Grid */
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .recipe-card {
+            background: var(--surface);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .recipe-image-container {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            overflow: hidden;
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .recipe-card:hover .recipe-image {
+            transform: scale(1.1);
+        }
+
+        .recipe-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .recipe-content {
+            padding: 1.8rem;
+        }
+
+        .recipe-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        .recipe-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            color: var(--text);
+        }
+
+        .recipe-cuisine {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .favorite-icon {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #bdc3c7;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2;
+        }
+
+        .favorite-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .favorite-icon.active {
+            color: #e74c3c;
+            background: white;
+            animation: heartBeat 0.3s;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
+            border-top: 2px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .recipe-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-top: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .recipe-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .diet-tag {
+            background: var(--bg);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        /* Loading & Infinite Scroll */
+        .loading-trigger {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 24px;
+            max-width: 1000px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlide 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8rem;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: var(--text);
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg) scale(1.1);
+            background: white;
+            color: var(--danger);
+        }
+
+        .modal-image-container {
+            width: 100%;
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        .modal-header {
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .servings-control {
+            background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 100%);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 2.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            border: 2px solid var(--border);
+        }
+
+        .servings-label {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        .servings-adjuster {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+
+        .servings-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-weight: 700;
+        }
+
+        .servings-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+        }
+
+        .servings-value {
+            font-weight: 800;
+            min-width: 40px;
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--text);
+        }
+
+        .ingredients-section, .instructions-section {
+            margin: 2.5rem 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .ingredient-item {
+            background: var(--bg);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .ingredient-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .ingredient-checkbox {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .ingredient-text {
+            flex: 1;
+            font-size: 1.05rem;
+        }
+
+        .ingredient-amount {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .instructions-list {
+            counter-reset: step;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .instruction-step {
+            position: relative;
+            padding-left: 4rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text);
+        }
+
+        .instruction-step:last-child {
+            border-bottom: none;
+        }
+
+        .instruction-step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 100%);
+            border-radius: 16px;
+            border: 2px solid var(--border);
+        }
+
+        .nutrition-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .nutrition-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nutrition-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .recipes-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .filters-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .active-filters {
+                margin-left: 0;
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .modal-content {
+                margin: 0;
+                border-radius: 0;
+                max-height: 100vh;
+            }
+            
+            .modal-image-container {
+                height: 300px;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                border-radius: 25px;
+            }
+            
+            .search-btn {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+
+        /* Print styles */
+        @media print {
+            header, .filters-section, .favorite-icon, .modal-close, .servings-control {
+                display: none;
+            }
+            
+            .modal-overlay {
+                position: static;
+                display: block;
+                background: white;
+            }
+            
+            .modal-content {
+                max-height: none;
+                box-shadow: none;
+            }
+            
+            .recipe-card {
+                break-inside: avoid;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 6px;
+            border: 3px solid var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Image loading placeholder */
+        .image-placeholder {
+            background: linear-gradient(90deg, var(--bg) 25%, var(--border) 50%, var(--bg) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <span>🍳</span>
+                <span>Culinara</span>
+            </a>
+            <div class="nav-controls">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <span id="theme-icon">🌙</span>
+                </button>
+                <button class="favorites-btn" onclick="showFavorites()">
+                    <span>❤️</span>
+                    <span>Favorites</span>
+                    <span id="fav-count">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover 1000+ Global Recipes</h1>
+            <p>From Italian pasta to Japanese sushi, find your next culinary adventure with stunning photography</p>
+            <div class="search-container">
+                <input type="text" 
+                       class="search-input" 
+                       id="searchInput" 
+                       placeholder="Search recipes, cuisines, or ingredients..."
+                       oninput="handleSearch(this.value)">
+                <button class="search-btn" onclick="focusSearch()">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="filters-section">
+        <div class="filters-container">
+            <div class="filter-group">
+                <select class="filter-select" id="cuisineFilter" onchange="applyFilter('cuisine', this.value)">
+                    <option value="">All Cuisines</option>
+                </select>
+                <select class="filter-select" id="timeFilter" onchange="applyFilter('time', this.value)">
+                    <option value="">Any Time</option>
+                    <option value="15">Under 15 min</option>
+                    <option value="30">Under 30 min</option>
+                    <option value="60">Under 1 hour</option>
+                    <option value="120">Under 2 hours</option>
+                </select>
+                <select class="filter-select" id="difficultyFilter" onchange="applyFilter('difficulty', this.value)">
+                    <option value="">Any Difficulty</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <select class="filter-select" id="dietFilter" onchange="applyFilter('diet', this.value)">
+                    <option value="">All Diets</option>
+                    <option value="Vegetarian">Vegetarian</option>
+                    <option value="Vegan">Vegan</option>
+                    <option value="Gluten-Free">Gluten-Free</option>
+                    <option value="Keto">Keto</option>
+                    <option value="Paleo">Paleo</option>
+                </select>
+            </div>
+            <div class="active-filters" id="activeFilters"></div>
+        </div>
+    </section>
+
+    <main class="main-container">
+        <div class="stats-bar">
+            <div>
+                Showing <span class="recipe-count" id="recipeCount">0</span> recipes
+            </div>
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="setView('grid')" title="Grid view">⊞</button>
+                <button class="view-btn" onclick="setView('list')" title="List view">☰</button>
+            </div>
+        </div>
+
+        <div class="recipes-grid" id="recipesContainer"></div>
+        
+        <div class="loading-trigger" id="loadingTrigger">
+            <div class="spinner"></div>
+            <p>Loading more delicious recipes...</p>
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">🔍</div>
+            <h2>No recipes found</h2>
+            <p>Try adjusting your search or filters to find what you're craving</p>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="recipeModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // High-quality cuisine image mapping
+        const cuisineImages = {
+            'Italian': [
+                'https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/efb5f6d2e98eeb8e128f83ba114321e1334a2cfc.jpg',
+                'https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/5cbae469de49186a404eeb19c68985c6d2dd2e52.jpg',
+                'https://kimi-web-img.moonshot.cn/img/www.recipetineats.com/900131ebe8d1205bf7c30918f0001c50c32e560b.jpg'
+            ],
+            'Indian': [
+                'https://kimi-web-img.moonshot.cn/img/thekitchenpaper.com/027d960dc89cb070734869db00a0472fbb6dfc1e.jpg'
+            ],
+            'Chinese': [
+                'https://kimi-web-img.moonshot.cn/img/cafedelites.com/88f9fe69491f4af16dfb98d5c4e3d0f0fb8dae1b.jpg'
+            ],
+            'Japanese': [
+                'https://kimi-web-img.moonshot.cn/img/glebekitchen.com/9e8f4aaf7bf7d5d274affcd7cb1c40b2d95084d8.jpg',
+                'https://kimi-web-img.moonshot.cn/img/www.kitchensanctuary.com/dfed7c3a8e54ce195e6a7a7cce4efc7909cf699f.jpg'
+            ],
+            'Mexican': [
+                'https://kimi-web-img.moonshot.cn/img/www.thecookierookie.com/d31e7733b35671031fe1b164272001c5f61eb121.jpg',
+                'https://kimi-web-img.moonshot.cn/img/www.jessicagavin.com/744a5002aec116f3f38111bd4864bb887ce28631.jpg'
+            ],
+            'French': [
+                'https://kimi-web-img.moonshot.cn/img/pastrieslikeapro.com/cf0647c4acdfa16cd0d68e654ae716c958fe6e0d.jpg'
+            ],
+            'Thai': [
+                'https://kimi-web-img.moonshot.cn/img/www.halfbakedharvest.com/4188b9a3cc468ef835b4df77c5cb5d67cbd15f22.jpg'
+            ],
+            'Spanish': [
+                'https://kimi-web-img.moonshot.cn/img/tastesbetterfromscratch.com/908f3a1e6d6f9ba4e4d6a273d9d395c96d87219b.jpg',
+                'https://kimi-web-img.moonshot.cn/img/i0.wp.com/283f913c30de9978be75a3bd780326c1af04b544.png'
+            ],
+            'Greek': [
+                'https://kimi-web-img.moonshot.cn/img/www.recipetineats.com/900131ebe8d1205bf7c30918f0001c50c32e560b.jpg'
+            ],
+            'Lebanese': [
+                'https://kimi-web-img.moonshot.cn/img/www.nonguiltypleasures.com/a815c8775aedd0aff17b848bf00bb0f3f50a9eed.jpg',
+                'https://kimi-web-img.moonshot.cn/img/www.thefieryvegetarian.com/ac4f0bd2ce667e5d25055c29181c49da92d7134b.jpg'
+            ],
+            'Vietnamese': [
+                'https://kimi-web-img.moonshot.cn/img/www.recipetineats.com/10b1cac158c93f23ddf61348674336a3ad47f3eb.jpg'
+            ],
+            'Korean': [
+                'https://kimi-web-img.moonshot.cn/img/cdn.apartmenttherapy.info/48a15353981426a2cfdddc3bf869be6fcd41b511.jpg',
+                'https://kimi-web-img.moonshot.cn/img/cdn.sunbasket.com/47b4c8795792a0b4154812924b05e4454b4acb91.jpg'
+            ],
+            'Moroccan': [
+                'https://kimi-web-img.moonshot.cn/img/www.australianlamb.com.au/b97e963811688102fa353eba665d8a35c6203da2.jpg'
+            ],
+            'Turkish': [
+                'https://kimi-web-img.moonshot.cn/img/www.nonguiltypleasures.com/a815c8775aedd0aff17b848bf00bb0f3f50a9eed.jpg'
+            ],
+            'Brazilian': [
+                'https://kimi-web-img.moonshot.cn/img/www.allrecipes.com/6c988e9d65b002ef6c7addb95c3e58d8f0062e3c.jpg'
+            ],
+            'Peruvian': [
+                'https://kimi-web-img.moonshot.cn/img/sarahkoszyk.com/db0274f88c3fe02d0e1c13366c60bc77c2b7a0e6.jpg',
+                'https://kimi-web-img.moonshot.cn/img/cravingsjournal.com/158ed843c602e2f73bc5139465be595a7332edf0.jpg'
+            ],
+            'Russian': [
+                'https://kimi-web-img.moonshot.cn/img/vikalinka.com/79bb78596f9a8b6fa260f614ef6440b9321366bd.jpg'
+            ],
+            'German': [
+                'https://kimi-web-img.moonshot.cn/img/www.everyday-delicious.com/bd93e11bd3cf99dcaccbebb6189cff537febccbd.jpg',
+                'https://kimi-web-img.moonshot.cn/img/thestayathomechef.com/2c1e3e9cba98f76e15cc76f887463bcc464dfad1.jpg'
+            ],
+            'British': [
+                'https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/5cbae469de49186a404eeb19c68985c6d2dd2e52.jpg'
+            ],
+            'American': [
+                'https://kimi-web-img.moonshot.cn/img/www.thecookierookie.com/d31e7733b35671031fe1b164272001c5f61eb121.jpg'
+            ],
+            'Caribbean': [
+                'https://kimi-web-img.moonshot.cn/img/disheswithdad.com/c5a4f10d988ed6c24a542544638a64bf4957cdd7.jpg',
+                'https://kimi-web-img.moonshot.cn/img/www.vindulge.com/731e275f3dea65f6bea4b0fe43999952500e9ab5.jpg'
+            ],
+            'Ethiopian': [
+                'https://kimi-web-img.moonshot.cn/img/static.vecteezy.com/49ae9152e51a37c9880c4251fadc5dd66ebd0d52.jpeg'
+            ],
+            'Indonesian': [
+                'https://kimi-web-img.moonshot.cn/img/www.kitchensanctuary.com/06a7a19bb5429ab17e34a1af00a87028c42ea98b.jpg',
+                'https://kimi-web-img.moonshot.cn/img/browngirlveganeats.com/4b37759b0b815888157dc21318b11e7fce06b56d.jpg'
+            ],
+            'default': [
+                'https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/efb5f6d2e98eeb8e128f83ba114321e1334a2cfc.jpg',
+                'https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/5cbae469de49186a404eeb19c68985c6d2dd2e52.jpg'
+            ]
+        };
+
+        const cuisines = [
+            'Italian', 'Indian', 'Chinese', 'Japanese', 'Mexican', 'French', 
+            'Thai', 'Spanish', 'Greek', 'Lebanese', 'Vietnamese', 'Korean',
+            'Moroccan', 'Turkish', 'Brazilian', 'Peruvian', 'Russian', 'German',
+            'British', 'American', 'Caribbean', 'Ethiopian', 'Nigerian', 'Indonesian',
+            'Malaysian', 'Filipino', 'Polish', 'Portuguese', 'Swedish', 'Australian'
+        ];
+
+        const ingredients = {
+            proteins: ['Chicken', 'Beef', 'Pork', 'Lamb', 'Salmon', 'Shrimp', 'Tofu', 'Tempeh', 'Eggs', 'Duck', 'Turkey', 'Cod', 'Tuna', 'Tilapia'],
+            vegetables: ['Tomatoes', 'Onions', 'Garlic', 'Bell Peppers', 'Spinach', 'Mushrooms', 'Zucchini', 'Eggplant', 'Carrots', 'Potatoes', 'Broccoli', 'Cauliflower', 'Asparagus', 'Green Beans'],
+            grains: ['Rice', 'Pasta', 'Quinoa', 'Couscous', 'Bread', 'Noodles', 'Barley', 'Lentils', 'Chickpeas', 'Black Beans', 'Polenta', 'Orzo', 'Couscous'],
+            herbs: ['Basil', 'Cilantro', 'Parsley', 'Mint', 'Thyme', 'Rosemary', 'Oregano', 'Dill', 'Sage', 'Chives', 'Tarragon', 'Bay Leaves'],
+            spices: ['Cumin', 'Coriander', 'Turmeric', 'Paprika', 'Cinnamon', 'Cardamom', 'Ginger', 'Saffron', 'Nutmeg', 'Cloves', 'Fenugreek', 'Sumac'],
+            dairy: ['Cheese', 'Yogurt', 'Cream', 'Butter', 'Milk', 'Feta', 'Parmesan', 'Mozzarella', 'Coconut Milk', 'Almond Milk', 'Heavy Cream', 'Sour Cream']
+        };
+
+        const cookingMethods = ['Baking', 'Grilling', 'Sautéing', 'Roasting', 'Steaming', 'Frying', 'Poaching', 'Braising', 'Smoking', 'Raw', 'Slow Cooking', 'Pressure Cooking'];
+
+        let recipes = [];
+        let filteredRecipes = [];
+        let displayedRecipes = [];
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        let currentPage = 0;
+        const recipesPerPage = 12;
+        let currentFilters = {};
+        let currentSearch = '';
+        let currentServings = {};
+
+        // Generate 1000+ recipes with real images
+        function generateRecipes() {
+            const recipeTemplates = [
+                { base: 'Curry', cuisines: ['Indian', 'Thai', 'Japanese', 'Caribbean', 'Malaysian'], diets: ['Gluten-Free', 'Dairy-Free'] },
+                { base: 'Stir Fry', cuisines: ['Chinese', 'Korean', 'Thai', 'Indonesian'], diets: ['Dairy-Free', 'Quick'] },
+                { base: 'Pasta', cuisines: ['Italian', 'American', 'French'], diets: ['Vegetarian'] },
+                { base: 'Soup', cuisines: ['French', 'Chinese', 'Mexican', 'Russian', 'Vietnamese', 'Thai'], diets: ['Low-Calorie', 'Gluten-Free'] },
+                { base: 'Salad', cuisines: ['Greek', 'Lebanese', 'American', 'French', 'Italian'], diets: ['Vegetarian', 'Vegan', 'Keto'] },
+                { base: 'Grilled', cuisines: ['American', 'Australian', 'Brazilian', 'Turkish', 'Caribbean'], diets: ['Keto', 'Paleo', 'Gluten-Free'] },
+                { base: 'Stew', cuisines: ['Moroccan', 'Ethiopian', 'Irish', 'French', 'German', 'Russian'], diets: ['Gluten-Free', 'Comfort Food'] },
+                { base: 'Rice Dish', cuisines: ['Spanish', 'Indian', 'Japanese', 'Italian', 'Indonesian', 'Malaysian'], diets: ['Vegetarian', 'Dairy-Free'] },
+                { base: 'Noodles', cuisines: ['Japanese', 'Chinese', 'Vietnamese', 'Korean', 'Thai'], diets: ['Dairy-Free', 'Quick'] },
+                { base: 'Pie', cuisines: ['British', 'American', 'Australian', 'French', 'Polish'], diets: ['Vegetarian', 'Comfort Food'] },
+                { base: 'Casserole', cuisines: ['American', 'French', 'Italian', 'German', 'British'], diets: ['Comfort Food', 'Family Style'] },
+                { base: 'Sandwich', cuisines: ['American', 'Vietnamese', 'Turkish', 'Cuban', 'Italian'], diets: ['Quick', 'Portable'] },
+                { base: 'Tacos', cuisines: ['Mexican', 'Korean', 'American', 'Caribbean'], diets: ['Gluten-Free', 'Fun'] },
+                { base: 'Pizza', cuisines: ['Italian', 'American'], diets: ['Vegetarian', 'Party Food'] },
+                { base: 'Dumplings', cuisines: ['Chinese', 'Japanese', 'Korean', 'Polish', 'Vietnamese'], diets: ['Dairy-Free', 'Comfort Food'] },
+                { base: 'Roast', cuisines: ['British', 'American', 'French', 'German', 'Australian'], diets: ['Keto', 'Paleo', 'Sunday Dinner'] },
+                { base: 'Burger', cuisines: ['American', 'Australian', 'British'], diets: ['Classic', 'Comfort Food'] },
+                { base: 'Sushi', cuisines: ['Japanese'], diets: ['Gluten-Free', 'Paleo', 'Fresh'] },
+                { base: 'Tagine', cuisines: ['Moroccan', 'Algerian'], diets: ['Gluten-Free', 'Slow Cooked'] },
+                { base: 'Bowl', cuisines: ['Korean', 'Hawaiian', 'American', 'Japanese'], diets: ['Healthy', 'Balanced'] },
+                { base: 'Skewers', cuisines: ['Turkish', 'Greek', 'Lebanese', 'Indonesian', 'Brazilian'], diets: ['Grilled', 'Protein Rich'] },
+                { base: 'Ceviche', cuisines: ['Peruvian', 'Mexican', 'Japanese'], diets: ['Gluten-Free', 'Fresh', 'Low Calorie'] },
+                { base: 'Pho', cuisines: ['Vietnamese'], diets: ['Gluten-Free', 'Comfort Food', 'Nourishing'] },
+                { base: 'Ramen', cuisines: ['Japanese'], diets: ['Comfort Food', 'Umami'] },
+                { base: 'Falafel', cuisines: ['Lebanese', 'Egyptian', 'Israeli'], diets: ['Vegan', 'Vegetarian', 'Protein Rich'] }
+            ];
+
+            const generated = [];
+            let id = 1;
+
+            for (let i = 0; i < 1050; i++) {
+                const template = recipeTemplates[i % recipeTemplates.length];
+                const cuisine = template.cuisines[Math.floor(Math.random() * template.cuisines.length)];
+                
+                // Get appropriate image for cuisine
+                const cuisineImageList = cuisineImages[cuisine] || cuisineImages['default'];
+                const image = cuisineImageList[id % cuisineImageList.length];
+                
+                const protein = ingredients.proteins[Math.floor(Math.random() * ingredients.proteins.length)];
+                const vegetable = ingredients.vegetables[Math.floor(Math.random() * ingredients.vegetables.length)];
+                const grain = ingredients.grains[Math.floor(Math.random() * ingredients.grains.length)];
+                const herb = ingredients.herbs[Math.floor(Math.random() * ingredients.herbs.length)];
+                const spice = ingredients.spices[Math.floor(Math.random() * ingredients.spices.length)];
+                
+                const difficulty = ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)];
+                const prepTime = Math.floor(Math.random() * 60) + 10;
+                const cookTime = Math.floor(Math.random() * 120) + 10;
+                const totalTime = prepTime + cookTime;
+                
+                const servings = Math.floor(Math.random() * 6) + 2;
+                
+                // Generate ingredients list
+                const recipeIngredients = [
+                    { item: protein, amount: (Math.random() * 500 + 200).toFixed(0), unit: 'g' },
+                    { item: vegetable, amount: (Math.random() * 3 + 1).toFixed(0), unit: 'cups' },
+                    { item: grain, amount: (Math.random() * 200 + 100).toFixed(0), unit: 'g' },
+                    { item: herb, amount: (Math.random() * 0.5 + 0.25).toFixed(2), unit: 'cup' },
+                    { item: spice, amount: (Math.random() * 2 + 0.5).toFixed(1), unit: 'tsp' },
+                    { item: 'Salt', amount: '1', unit: 'tsp' },
+                    { item: 'Black Pepper', amount: '0.5', unit: 'tsp' },
+                    { item: 'Olive Oil', amount: '2', unit: 'tbsp' }
+                ];
+
+                // Generate instructions
+                const instructions = [
+                    `Prepare all ingredients by washing and chopping the ${vegetable} into bite-sized pieces.`,
+                    `Heat olive oil in a large pan over medium heat. Add ${protein} and cook until golden brown, about 5-7 minutes.`,
+                    `Add chopped ${vegetable} and sauté for 3-4 minutes until softened.`,
+                    `Stir in ${grain}, ${spice}, and ${herb}. Mix well to combine all flavors.`,
+                    `Add 2 cups of water or stock, bring to a boil, then reduce heat to low.`,
+                    `Cover and simmer for ${cookTime} minutes, stirring occasionally, until ${grain} is tender and liquid is absorbed.`,
+                    `Season with salt and pepper to taste. Garnish with fresh ${herb} before serving.`,
+                    `Let rest for 5 minutes before serving hot. Enjoy your ${cuisine} creation!`
+                ];
+
+                // Generate nutrition (approximate)
+                const calories = Math.floor(Math.random() * 400) + 300;
+                const protein_g = Math.floor(Math.random() * 30) + 15;
+                const carbs = Math.floor(Math.random() * 50) + 20;
+                const fat = Math.floor(Math.random() * 20) + 8;
+
+                const title = `${cuisine} ${protein} ${template.base} with ${vegetable}`;
+                
+                generated.push({
+                    id: id++,
+                    title: title,
+                    cuisine: cuisine,
+                    description: `A delicious ${difficulty.toLowerCase()} ${cuisine.toLowerCase()} dish featuring tender ${protein.toLowerCase()} and fresh ${vegetable.toLowerCase()}, perfectly seasoned with ${spice.toLowerCase()} and ${herb.toLowerCase()}.`,
+                    image: image,
+                    prepTime,
+                    cookTime,
+                    totalTime,
+                    servings,
+                    difficulty,
+                    ingredients: recipeIngredients,
+                    instructions,
+                    nutrition: { calories, protein: protein_g, carbs, fat },
+                    diet: template.diets[Math.floor(Math.random() * template.diets.length)] || 'Standard',
+                    rating: (Math.random() * 2 + 3).toFixed(1),
+                    reviews: Math.floor(Math.random() * 500) + 10
+                });
+            }
+
+            return generated;
+        }
+
+        // Initialize
+        function init() {
+            recipes = generateRecipes();
+            filteredRecipes = [...recipes];
+            
+            populateCuisineFilter();
+            loadRecipes();
+            setupIntersectionObserver();
+            updateTheme();
+            updateFavCount();
+            
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function populateCuisineFilter() {
+            const select = document.getElementById('cuisineFilter');
+            cuisines.sort().forEach(cuisine => {
+                const option = document.createElement('option');
+                option.value = cuisine;
+                option.textContent = cuisine;
+                select.appendChild(option);
+            });
+        }
+
+        function loadRecipes() {
+            const container = document.getElementById('recipesContainer');
+            const start = currentPage * recipesPerPage;
+            const end = start + recipesPerPage;
+            const toShow = filteredRecipes.slice(start, end);
+            
+            if (currentPage === 0) {
+                container.innerHTML = '';
+            }
+
+            toShow.forEach(recipe => {
+                const card = createRecipeCard(recipe);
+                container.appendChild(card);
+            });
+
+            displayedRecipes = filteredRecipes.slice(0, end);
+            updateRecipeCount();
+            
+            const loadingTrigger = document.getElementById('loadingTrigger');
+            if (end >= filteredRecipes.length) {
+                loadingTrigger.style.display = 'none';
+            } else {
+                loadingTrigger.style.display = 'block';
+            }
+
+            // Show empty state if no results
+            document.getElementById('emptyState').style.display = 
+                filteredRecipes.length === 0 ? 'block' : 'none';
+        }
+
+        function createRecipeCard(recipe) {
+            const card = document.createElement('div');
+            card.className = 'recipe-card';
+            card.onclick = (e) => {
+                if (!e.target.closest('.favorite-icon')) {
+                    openRecipe(recipe.id);
+                }
+            };
+
+            const isFav = favorites.includes(recipe.id);
+            
+            card.innerHTML = `
+                <div class="recipe-image-container">
+                    <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image" loading="lazy" onerror="this.src='${cuisineImages['default'][0]}'">
+                    <span class="recipe-badge">${recipe.difficulty}</span>
+                    <button class="favorite-icon ${isFav ? 'active' : ''}" onclick="toggleFavorite(${recipe.id}, this)" aria-label="Add to favorites">
+                        ${isFav ? '❤️' : '🤍'}
+                    </button>
+                </div>
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <div>
+                            <div class="recipe-cuisine">🌍 ${recipe.cuisine}</div>
+                            <h3 class="recipe-title">${recipe.title}</h3>
+                        </div>
+                    </div>
+                    <p class="recipe-description">${recipe.description}</p>
+                    <div class="recipe-meta">
+                        <span class="meta-item">⏱️ ${recipe.totalTime}m</span>
+                        <span class="meta-item">👥 ${recipe.servings}</span>
+                        <span class="meta-item">⭐ ${recipe.rating}</span>
+                    </div>
+                    <div class="recipe-footer">
+                        <span class="diet-tag">${recipe.diet}</span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function setupIntersectionObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && displayedRecipes.length < filteredRecipes.length) {
+                        currentPage++;
+                        loadRecipes();
+                    }
+                });
+            }, { rootMargin: '100px' });
+
+            observer.observe(document.getElementById('loadingTrigger'));
+        }
+
+        // Search and Filter
+        function handleSearch(query) {
+            currentSearch = query.toLowerCase();
+            applyFilters();
+        }
+
+        function applyFilter(type, value) {
+            if (value) {
+                currentFilters[type] = value;
+            } else {
+                delete currentFilters[type];
+            }
+            updateActiveFilters();
+            applyFilters();
+        }
+
+        function updateActiveFilters() {
+            const container = document.getElementById('activeFilters');
+            container.innerHTML = '';
+            
+            Object.entries(currentFilters).forEach(([type, value]) => {
+                const tag = document.createElement('div');
+                tag.className = 'filter-tag';
+                tag.innerHTML = `${value} <span onclick="removeFilter('${type}')">×</span>`;
+                container.appendChild(tag);
+            });
+        }
+
+        function removeFilter(type) {
+            delete currentFilters[type];
+            document.getElementById(`${type}Filter`).value = '';
+            updateActiveFilters();
+            applyFilters();
+        }
+
+        function applyFilters() {
+            currentPage = 0;
+            filteredRecipes = recipes.filter(recipe => {
+                // Search
+                if (currentSearch) {
+                    const searchMatch = 
+                        recipe.title.toLowerCase().includes(currentSearch) ||
+                        recipe.cuisine.toLowerCase().includes(currentSearch) ||
+                        recipe.ingredients.some(ing => ing.item.toLowerCase().includes(currentSearch));
+                    if (!searchMatch) return false;
+                }
+
+                // Filters
+                if (currentFilters.cuisine && recipe.cuisine !== currentFilters.cuisine) return false;
+                if (currentFilters.time && recipe.totalTime > parseInt(currentFilters.time)) return false;
+                if (currentFilters.difficulty && recipe.difficulty !== currentFilters.difficulty) return false;
+                if (currentFilters.diet && recipe.diet !== currentFilters.diet) return false;
+
+                return true;
+            });
+
+            loadRecipes();
+        }
+
+        function updateRecipeCount() {
+            document.getElementById('recipeCount').textContent = filteredRecipes.length;
+        }
+
+        // Modal
+        function openRecipe(id) {
+            const recipe = recipes.find(r => r.id === id);
+            if (!recipe) return;
+
+            currentServings[id] = recipe.servings;
+            
+            const modal = document.getElementById('recipeModal');
+            const content = document.getElementById('modalContent');
+            
+            const isFav = favorites.includes(id);
+            
+            content.innerHTML = `
+                <div class="modal-image-container">
+                    <img src="${recipe.image}" alt="${recipe.title}" class="modal-image" onerror="this.src='${cuisineImages['default'][0]}'">
+                </div>
+                <div class="modal-body">
+                    <div class="modal-header">
+                        <span class="recipe-cuisine">🌍 ${recipe.cuisine}</span>
+                        <h2 class="modal-title">${recipe.title}</h2>
+                        <div class="modal-meta">
+                            <span>⏱️ Prep: ${recipe.prepTime}m</span>
+                            <span>🔥 Cook: ${recipe.cookTime}m</span>
+                            <span>📊 Difficulty: ${recipe.difficulty}</span>
+                            <span>⭐ ${recipe.rating} (${recipe.reviews} reviews)</span>
+                        </div>
+                    </div>
+
+                    <div class="servings-control">
+                        <span class="servings-label">👥 Adjust Servings:</span>
+                        <div class="servings-adjuster">
+                            <button class="servings-btn" onclick="adjustServings(${id}, -1)">−</button>
+                            <span class="servings-value" id="servings-${id}">${recipe.servings}</span>
+                            <button class="servings-btn" onclick="adjustServings(${id}, 1)">+</button>
+                        </div>
+                        <button class="favorite-icon ${isFav ? 'active' : ''}" style="margin-left: auto; position: static; width: 50px; height: 50px; font-size: 1.6rem;" onclick="toggleFavorite(${id}, this)" id="modal-fav-${id}">
+                            ${isFav ? '❤️' : '🤍'}
+                        </button>
+                    </div>
+
+                    <div class="ingredients-section">
+                        <h3 class="section-title">📝 Ingredients</h3>
+                        <div class="ingredients-grid" id="ingredients-${id}">
+                            ${renderIngredients(recipe, id)}
+                        </div>
+                    </div>
+
+                    <div class="instructions-section">
+                        <h3 class="section-title">👨‍🍳 Instructions</h3>
+                        <ol class="instructions-list">
+                            ${recipe.instructions.map(step => `
+                                <li class="instruction-step">${step}</li>
+                            `).join('')}
+                        </ol>
+                    </div>
+
+                    <div class="nutrition-grid">
+                        <div class="nutrition-item">
+                            <div class="nutrition-value">${recipe.nutrition.calories}</div>
+                            <div class="nutrition-label">Calories</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-value">${recipe.nutrition.protein}g</div>
+                            <div class="nutrition-label">Protein</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-value">${recipe.nutrition.carbs}g</div>
+                            <div class="nutrition-label">Carbs</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-value">${recipe.nutrition.fat}g</div>
+                            <div class="nutrition-label">Fat</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2.5rem; padding: 1.5rem; background: var(--bg); border-radius: 16px; font-size: 1rem; color: var(--text-secondary); border: 2px solid var(--border);">
+                        <strong style="color: var(--text);">Dietary Info:</strong> ${recipe.diet} | 
+                        <strong style="color: var(--text);">Cuisine:</strong> ${recipe.cuisine} | 
+                        <strong style="color: var(--text);">Method:</strong> ${cookingMethods[recipe.id % cookingMethods.length]}
+                    </div>
+                </div>
+            `;
+            
+            // Add JSON-LD structured data
+            const structuredData = {
+                "@context": "https://schema.org",
+                "@type": "Recipe",
+                "name": recipe.title,
+                "image": recipe.image,
+                "author": {
+                    "@type": "Organization",
+                    "name": "Culinara"
+                },
+                "datePublished": new Date().toISOString(),
+                "description": recipe.description,
+                "prepTime": `PT${recipe.prepTime}M`,
+                "cookTime": `PT${recipe.cookTime}M`,
+                "totalTime": `PT${recipe.totalTime}M`,
+                "recipeYield": `${recipe.servings} servings`,
+                "recipeCategory": recipe.cuisine,
+                "recipeIngredient": recipe.ingredients.map(i => `${i.amount} ${i.unit} ${i.item}`),
+                "recipeInstructions": recipe.instructions.map((step, i) => ({
+                    "@type": "HowToStep",
+                    "text": step,
+                    "position": i + 1
+                })),
+                "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": `${recipe.nutrition.calories} calories`,
+                    "proteinContent": `${recipe.nutrition.protein}g`,
+                    "carbohydrateContent": `${recipe.nutrition.carbs}g`,
+                    "fatContent": `${recipe.nutrition.fat}g`
+                },
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": recipe.rating,
+                    "reviewCount": recipe.reviews
+                }
+            };
+            
+            // Remove old structured data if exists
+            const oldScript = document.querySelector('script[type="application/ld+json"]:last-child');
+            if (oldScript && oldScript.parentElement === content) {
+                oldScript.remove();
+            }
+            
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.text = JSON.stringify(structuredData);
+            content.appendChild(script);
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function renderIngredients(recipe, id) {
+            const ratio = currentServings[id] / recipe.servings;
+            return recipe.ingredients.map((ing, idx) => {
+                const adjustedAmount = (parseFloat(ing.amount) * ratio).toFixed(2).replace(/\.?0+$/, '');
+                return `
+                    <div class="ingredient-item">
+                        <input type="checkbox" class="ingredient-checkbox" id="ing-${id}-${idx}">
+                        <label for="ing-${id}-${idx}" class="ingredient-text">
+                            <span class="ingredient-amount" id="amount-${id}-${idx}">${adjustedAmount}</span> 
+                            ${ing.unit} ${ing.item}
+                        </label>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function adjustServings(id, delta) {
+            const recipe = recipes.find(r => r.id === id);
+            const newServings = currentServings[id] + delta;
+            
+            if (newServings < 1 || newServings > 20) return;
+            
+            currentServings[id] = newServings;
+            document.getElementById(`servings-${id}`).textContent = newServings;
+            
+            // Update all ingredient amounts
+            const ratio = newServings / recipe.servings;
+            recipe.ingredients.forEach((ing, idx) => {
+                const el = document.getElementById(`amount-${id}-${idx}`);
+                if (el) {
+                    const newAmount = (parseFloat(ing.amount) * ratio).toFixed(2).replace(/\.?0+$/, '');
+                    el.textContent = newAmount;
+                }
+            });
+        }
+
+        function closeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('recipeModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Favorites
+        function toggleFavorite(id, btn) {
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                btn.classList.remove('active');
+                btn.innerHTML = '🤍';
+            } else {
+                favorites.push(id);
+                btn.classList.add('active');
+                btn.innerHTML = '❤️';
+                
+                // Add heart animation
+                btn.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavCount();
+            
+            // Update modal button if open
+            const modalBtn = document.getElementById(`modal-fav-${id}`);
+            if (modalBtn && modalBtn !== btn) {
+                modalBtn.classList.toggle('active');
+                modalBtn.innerHTML = index > -1 ? '🤍' : '❤️';
+            }
+        }
+
+        function updateFavCount() {
+            const count = favorites.length;
+            document.getElementById('fav-count').textContent = count;
+        }
+
+        function showFavorites() {
+            currentSearch = '';
+            document.getElementById('searchInput').value = '';
+            currentFilters = { favorites: true };
+            filteredRecipes = recipes.filter(r => favorites.includes(r.id));
+            currentPage = 0;
+            loadRecipes();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Theme
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateThemeIcon(next);
+        }
+
+        function updateThemeIcon(theme) {
+            document.getElementById('theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function updateTheme() {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            updateThemeIcon(saved);
+        }
+
+        // View toggle
+        function setView(view) {
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const container = document.getElementById('recipesContainer');
+            if (view === 'list') {
+                container.style.gridTemplateColumns = '1fr';
+            } else {
+                container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(350px, 1fr))';
+            }
+        }
+
+        function focusSearch() {
+            document.getElementById('searchInput').focus();
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+            if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+                e.preventDefault();
+                focusSearch();
+            }
+        });
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
